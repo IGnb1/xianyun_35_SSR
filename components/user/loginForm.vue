@@ -45,14 +45,22 @@ export default {
   methods: {
     //登录按钮
     handleLoginSubmit() {
-        this.$axios({
-            url:'/accounts/login',
-            method:'POST',
-            data:this.form
-        })
-        .then(res=>{
-            console.log(res)
-        })
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.$axios({
+            url: "/accounts/login",
+            method: "POST",
+            data: this.form
+          }).then(res => {
+            console.log(res);
+            this.$store.commit("user/setUserInfo", res.data);
+            this.$message.success("登录成功，正在跳转");
+            setTimeout(() => {
+              this.$router.push('/')
+            }, 1000);
+          });
+        }
+      });
     }
   }
 };
