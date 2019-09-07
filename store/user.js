@@ -13,7 +13,7 @@ export const mutations = {
     },
     clearStore(state){
         state.userInfo = {}
-    }
+    },
 };
 
 export const actions = {};

@@ -83,7 +83,8 @@ export default {
         { icon: "iconfont icondancheng", name: "单程" },
         { icon: "iconfont iconshuangxiang", name: "往返" }
       ],
-      currentTab: 0
+      currentTab: 0,
+      JsonObj:[]
     };
   },
   methods: {
@@ -202,6 +203,10 @@ export default {
         path: "/air/flights",
         query: this.form
       });
+      // 保存搜索机票
+      this.JsonObj = JSON.parse(localStorage.getItem('airs') || "[]")
+      this.JsonObj.push(this.form)
+      localStorage.setItem('airs',JSON.stringify(this.JsonObj))
     }
   },
   mounted() {}

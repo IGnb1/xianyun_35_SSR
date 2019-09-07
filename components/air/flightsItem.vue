@@ -30,17 +30,24 @@
     </div>
     <div class="flight-recommend">
       <!-- 隐藏的座位信息列表 -->
-      <el-row type="flex" justify="space-between" align="middle" v-if="showRecommend">
+      <el-row
+        type="flex"
+        justify="space-between"
+        align="middle"
+        v-show="showRecommend"
+        v-for="(item,index) in data.seat_infos"
+        :key="index"
+      >
         <el-col :span="4">低价推荐</el-col>
         <el-col :span="20">
           <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
             <el-col :span="16" class="flight-sell-left">
-              <span>经济舱</span> | 上海一诺千金航空服务有限公司
+              <span>{{item.name}}</span> | {{item.supplierName}}
             </el-col>
-            <el-col :span="5" class="price">￥1345</el-col>
+            <el-col :span="5" class="price">￥{{item.org_settle_price}}</el-col>
             <el-col :span="3" class="choose-button">
               <el-button type="warning" size="mini">选定</el-button>
-              <p>剩余：83</p>
+              <p>剩余：{{item.discount}}</p>
             </el-col>
           </el-row>
         </el-col>
@@ -81,11 +88,11 @@ export default {
       if (total < 0) {
         total = arrTime + 24 * 60 - depTime;
       }
-      return `${Math.floor(total / 60)}时${total % 60}`
+      return `${Math.floor(total / 60)}时${total % 60}`;
     }
   },
-  mounted(){
-      console.log(this.data)
+  mounted() {
+    // console.log(this.data);
   }
 };
 </script>
