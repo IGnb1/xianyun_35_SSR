@@ -26,7 +26,7 @@
       <!-- 侧边栏 -->
       <div class="aside">
         <!-- 侧边栏组件 -->
-        <FlightsAside/>
+        <FlightsAside />
       </div>
     </el-row>
   </section>
@@ -54,16 +54,9 @@ export default {
     FlightsAside
   },
   mounted() {
+    // console.log(this.$route)
     // console.log(this.$route.query)
-    this.$axios({
-      url: "/airs",
-      params: this.$route.query
-    }).then(res => {
-      //   console.log(res);
-      this.flightsData = res.data;
-      this.dataList = this.flightsData.flights.slice(0, this.pageSize);
-      // console.log(this.flightsData);
-    });
+    this.getData()
   },
   methods: {
     //切换每页条数是触发
@@ -80,6 +73,24 @@ export default {
         this.pageIndex * this.pageSize
       );
       // console.log(this.dataList);
+    },
+    //获取机票数据
+    getData() {
+      this.$axios({
+        url: "/airs",
+        params: this.$route.query
+      }).then(res => {
+        //   console.log(res);
+        this.flightsData = res.data;
+        this.dataList = this.flightsData.flights.slice(0, this.pageSize);
+        // console.log(this.flightsData);
+      });
+    }
+  },
+  watch:{
+    //侧边栏点击变化url参数，$route监听url参数变化实行筛选
+    $route(){
+      this.getData()
     }
   }
 };

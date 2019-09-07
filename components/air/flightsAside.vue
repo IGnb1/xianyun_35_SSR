@@ -20,7 +20,7 @@
 
     <div class="history">
       <h5>历史查询</h5>
-      <nuxt-link to="#" v-for="(item ,index) in airList" :key="index">
+      <nuxt-link :to='`/air/flights?departCity=${item.departCity}&departCode=${item.departCode}&destCity=${item.destCity}&destCode=${item.destCode}&departDate=${item.departDate}`' v-for="(item ,index) in airList" :key="index">
         <el-row type="flex" justify="space-between" align="middle" class="history-item">
           <div class="air-info">
             <div class="to-from">{{item.departCity}} - {{item.destCity}}</div>
