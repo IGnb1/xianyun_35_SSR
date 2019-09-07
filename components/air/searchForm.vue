@@ -42,6 +42,7 @@
           v-model="form.departDate"
           style="width: 100%;"
           @change="handleDate"
+          :picker-options="pickerOptions"
         ></el-date-picker>
       </el-form-item>
       <el-form-item label>
@@ -60,6 +61,13 @@ import moment from "moment";
 export default {
   data() {
     return {
+      //设置日期
+      pickerOptions: {
+        //设置禁用日期
+        disabledDate(time) {
+          return time.getTime() < Date.now() - 8.64e7;
+        }
+      },
       //往返城市列表
       form: {
         //出发城市和城市代码
