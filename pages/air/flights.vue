@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+        <FlightsFilters :item="cacheFlightsData" @setDataList="setDataList" />
 
         <!-- 航班头部布局 -->
         <FlightsListHead />
@@ -19,7 +19,7 @@
           :page-sizes="[5, 10, 15, 20]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="flightsData.total"
+          :total="total"
         ></el-pagination>
       </div>
 
@@ -37,26 +37,37 @@ import moment from "moment";
 import FlightsListHead from "@/components/air/flightsListHead.vue";
 import FlightsItem from "@/components/air/flightsItem.vue";
 import FlightsAside from "@/components/air/flightsAside.vue";
+import FlightsFilters from "@/components/air/flightsFilters.vue";
 
 export default {
   data() {
     return {
-      flightsData: {}, // 航班总数据
+      flightsData: {
+        info: {},
+        options: {}
+      }, // 航班总数据
+      cacheFlightsData: {
+        info: {},
+        options: {}
+      }, // 备份数据
       dataList: [], // 航班列表数据，用于循环flightsItem组件，单独出来是因为要分页
       //分页
       pageIndex: 1,
-      pageSize: 5
+      pageSize: 5,
+      total: 0
     };
   },
   components: {
     FlightsListHead,
     FlightsItem,
-    FlightsAside
+    FlightsAside,
+    FlightsFilters
   },
   mounted() {
     // console.log(this.$route)
     // console.log(this.$route.query)
-    this.getData()
+    this.getData();
+    // console.log(this.flightsData)
   },
   methods: {
     //切换每页条数是触发
@@ -82,15 +93,28 @@ export default {
       }).then(res => {
         //   console.log(res);
         this.flightsData = res.data;
+        this.cacheFlightsData = { ...res.data };
         this.dataList = this.flightsData.flights.slice(0, this.pageSize);
-        // console.log(this.flightsData);
+        // 分页的总条数
+        this.total = this.flightsData.flights.length;
       });
+    },
+    //修改dataList实现筛选,参数arr：是筛选后传进的数组
+    setDataList(arr) {
+      console.log(arr);
+      this.flightsData.flights = arr;
+      this.pageIndex = 1;
+      this.dataList = this.flightsData.flights.slice(
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+      this.total = arr.length;
     }
   },
-  watch:{
+  watch: {
     //侧边栏点击变化url参数，$route监听url参数变化实行筛选
-    $route(){
-      this.getData()
+    $route() {
+      this.getData();
     }
   }
 };
