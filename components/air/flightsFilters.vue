@@ -82,29 +82,47 @@ export default {
   methods: {
     // 选择机场时候触发
     handleAirport(value) {
-      // let arr = this.item.flights.filter(e => {
-      //   return e.org_airport_name === value;
-      // });
-      // this.$emit("setDataList", arr);
+      let arr = this.item.flights.filter(e => {
+        return e.org_airport_name === value;
+      });
+      this.$emit("setDataList", arr);
     },
 
     // 选择出发时间时候触发
-    handleFlightTimes(value) {},
+    handleFlightTimes(value) {
+      // console.log(value)
+      let [from, to] = value.split(",");
+      let arr = this.item.flights.filter(e => {
+        const count = e.dep_time.split(":")[0];
+        return +count >= +from && +count < +to;
+      });
+      this.$emit("setDataList", arr);
+    },
 
     // 选择航空公司时候触发
     handleCompany(value) {
       let arr = this.item.flights.filter(e => {
         return e.airline_name === value;
       });
-      // console.log(arr)
       this.$emit("setDataList", arr);
     },
 
     // 选择机型时候触发
-    handleAirSize(value) {},
+    handleAirSize(value) {
+      let arr = this.item.flights.filter(e => {
+        return e.plane_size === value;
+      });
+      this.$emit("setDataList", arr);
+    },
 
     // 撤销条件时候触发
-    handleFiltersCancel() {}
+    handleFiltersCancel() {
+      this.airport = ""; // 机场
+      this.flightTimes = ""; // 出发时间
+      this.company = ""; // 航空公司
+      this.airSize = ""; // 机型大小
+      this.$emit("setDataList", this.item.flights);
+    }
   },
   mounted() {
     // console.log(this.item)

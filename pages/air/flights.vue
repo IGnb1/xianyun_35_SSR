@@ -101,7 +101,7 @@ export default {
     },
     //修改dataList实现筛选,参数arr：是筛选后传进的数组
     setDataList(arr) {
-      console.log(arr);
+      // console.log(arr);
       this.flightsData.flights = arr;
       this.pageIndex = 1;
       this.dataList = this.flightsData.flights.slice(
